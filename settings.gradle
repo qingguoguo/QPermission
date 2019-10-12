@@ -1,0 +1,2 @@
+include ':app', ':qpermissionlib'
+rootProject.name='QPermission'
