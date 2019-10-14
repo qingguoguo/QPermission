@@ -4,7 +4,7 @@ QPermission是基于注解解耦的Android权限请求框架
 # 使用场景
 支持在  
 1.Fragment  
-2.Activity
+2.FragmentActivity
 
 # 如何使用
 gradle中添加依赖
@@ -25,8 +25,8 @@ PermissionGranted：表示权限请求成功后执行的方法
 PermissionDenied：表示权限被拒绝后执行的方法 
  
 特别注意：
-PermissionDenied修饰的方法，必须带参数，如示例代码所示，参数表示被拒绝授权的权限  
-requestCode：一次请求的requestCode要一致，也就是PermissionGranted和PermissionDenied的参数一致
+PermissionDenied修饰的方法，必须带参数，如示例代码所示，参数表示被拒绝授权的权限字符串名称 
+requestCode：对应一次请求的requestCode要一致，PermissionGranted和PermissionDenied修饰的参数一致
 ```
     @PermissionGranted(requestCode = 300)
     public void openCamera() {
@@ -39,7 +39,7 @@ requestCode：一次请求的requestCode要一致，也就是PermissionGranted�
     }
 ```
 ## 使用方式2
-和方式1比较只是第一步调用形式不一样，其他一致，参考方式1
+和方式1比较，只是第一步调用形式不一样，其他步骤一致，请参考方式1
 ```
 QPermission.getInstance().requestPermission(
     SecondActivity.this, 500, true, Manifest.permission.READ_CONTACTS);
