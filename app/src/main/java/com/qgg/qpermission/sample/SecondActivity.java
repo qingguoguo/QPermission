@@ -51,7 +51,7 @@ public class SecondActivity extends AppCompatActivity {
     }
 
     @PermissionDenied(requestCode = 500)
-    public void closeContacts() {
+    public void closeContacts(List<String> permissions) {
         Toast.makeText(SecondActivity.this, "用户拒绝了联系人权限请求", Toast.LENGTH_SHORT).show();
     }
 }
