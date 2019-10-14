@@ -28,15 +28,15 @@ PermissionDenied：表示权限被拒绝后执行的方法
 PermissionDenied修饰的方法，必须带参数，如示例代码所示，参数表示被拒绝授权的权限字符串名称 
 requestCode：对应一次请求的requestCode要一致，PermissionGranted和PermissionDenied修饰的参数一致
 ```
-    @PermissionGranted(requestCode = 300)
-    public void openCamera() {
-        Toast.makeText(SecondActivity.this, "用户同意了相机和录音权限请求，可以干活了", Toast.LENGTH_SHORT).show();
-    }
+@PermissionGranted(requestCode = 300)
+public void openCamera() {
+    Toast.makeText(SecondActivity.this, "用户同意了相机和录音权限请求，可以干活了", Toast.LENGTH_SHORT).show();
+}
 
-    @PermissionDenied(requestCode = 300)
-    public void closeCamera(List<String> permissions) {
-        Toast.makeText(SecondActivity.this, "用户拒绝了 " + permissions.size() + " 请求", Toast.LENGTH_SHORT).show();
-    }
+@PermissionDenied(requestCode = 300)
+public void closeCamera(List<String> permissions) {
+    Toast.makeText(SecondActivity.this, "用户拒绝了 " + permissions.size() + " 请求", Toast.LENGTH_SHORT).show();
+}
 ```
 ## 使用方式2
 和方式1比较，只是第一步调用形式不一样，其他步骤一致，请参考方式1
