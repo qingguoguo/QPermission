@@ -11,6 +11,7 @@ buildscript {
         
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'com.novoda:bintray-release:0.9.1'
     }
 }
 
@@ -24,4 +25,15 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+//统一声明配置
+ext {
+    userOrg = 'qingguoguo'
+    groupId = 'com.qingguoguo'
+    uploadName = 'qpermission'
+    publishVersion = '1.0.0'
+    desc = 'Android permission'
+    website = 'https://github.com/qingguoguo/QPermission'
+    licences = ['Apache-2.0']
 }

@@ -48,13 +48,13 @@ public class PermissionsFragment extends Fragment {
      * 对无界面的fragment请求权限回调结果解析
      */
     @TargetApi(Build.VERSION_CODES.M)
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         mRequestCode = requestCode;
         log("Fragment onRequestPermissionsResult requestCode = " + mRequestCode);
         int code = mSubjects.get(requestCode).getRequestCode();
         if (requestCode != code) {
-            Log.e(QPermission.TAG, "request code:" + requestCode + " != " + code);
+            Log.e(QPermission.TAG, "requestCode：" + requestCode + " != " + code);
             return;
         }
         boolean[] shouldShowRequestPermissionRationale = new boolean[permissions.length];
@@ -75,7 +75,7 @@ public class PermissionsFragment extends Fragment {
             log("onRequestPermissionsResult  " + permissions[i]);
             boolean denied = grantResults[i] == PackageManager.PERMISSION_DENIED;
             if (denied) {
-                if (onDeniedList == null){
+                if (onDeniedList == null) {
                     onDeniedList = new ArrayList<>();
                 }
                 onDeniedList.add(permissions[i]);

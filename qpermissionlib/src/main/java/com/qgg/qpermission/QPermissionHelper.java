@@ -22,7 +22,7 @@ import java.util.List;
  */
 final public class QPermissionHelper {
     @VisibleForTesting
-    Lazy<PermissionsFragment> mPermissionsFragment;
+    private Lazy<PermissionsFragment> mPermissionsFragment;
 
     private int mRequestCode = -1;
 
@@ -99,7 +99,7 @@ final public class QPermissionHelper {
             String[] unrequestedPermissionsArray = unrequestedPermissions.toArray(new String[0]);
             requestPermissionsFromFragment(unrequestedPermissionsArray);
         } else {
-            // unrequestedPermissions.isEmpty() 表示所有权限都已获得
+            // unrequestedPermissions.isEmpty() 表示所有权限都已获得，直接执行方法
             onGranted();
         }
     }
