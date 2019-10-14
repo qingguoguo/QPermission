@@ -20,7 +20,7 @@ import java.util.List;
  * 创建日期：2019/10/11 on 19:52
  * 描述：权限请求辅助类
  */
-public class QPermissionHelper {
+final public class QPermissionHelper {
     @VisibleForTesting
     Lazy<PermissionsFragment> mPermissionsFragment;
 
@@ -120,34 +120,16 @@ public class QPermissionHelper {
         mPermissionsFragment.get().requestPermissions(permissions, mRequestCode);
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public boolean isGranted(String permission) {
-        return !isMarshmallow() || mPermissionsFragment.get().isGranted(permission);
+    private boolean isGranted(String... permissions) {
+        return !PermissionUtils.isMarshmallow() || PermissionUtils.isGrantedPermission(mPermissionsFragment.get().getActivity(), permissions);
     }
 
-    @SuppressWarnings("WeakerAccess")
-    public boolean isGranted(String... permissions) {
-        boolean isGranted = true; // 默认授予了权限
-        for (String permission : permissions) {
-            boolean granted = isGranted(permission);
-            if (!granted) {
-                isGranted = false;
-                break;
-            }
-        }
-        return isGranted;
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public boolean isRevoked(String permission) {
-        return isMarshmallow() && mPermissionsFragment.get().isRevoked(permission);
-    }
-
-    static boolean isMarshmallow() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+    private boolean isRevoked(String permission) {
+        return PermissionUtils.isMarshmallow() && PermissionUtils.isRevokedPermission(mPermissionsFragment.get().getActivity(), permission);
     }
 
     public void request(String... permissions) {
+        // 检查requestCode
         checkRequestCode();
         // 检查权限
         boolean granted = isGranted(permissions);
@@ -186,20 +168,23 @@ public class QPermissionHelper {
         return this;
     }
 
-    void onDenied() {
-        mPermissionsFragment.get().log("requestPermissions denied");
-        ReflectUtils.executeMethod(object, DENIED_MAP.get(mRequestCode));
+    void onDenied(List<String> deniedPermissions) {
+        mPermissionsFragment.get().log("QPermissionHelper onDenied " + mRequestCode);
+        ReflectUtils.executeMethod(object, DENIED_MAP.get(mRequestCode), deniedPermissions);
+        DENIED_MAP.remove(mRequestCode);
     }
 
     void onGranted() {
-        mPermissionsFragment.get().log("requestPermissions granted");
-        ReflectUtils.executeMethod(object, GRANTED_MAP.get(mRequestCode));
+        mPermissionsFragment.get().log("QPermissionHelper onGranted " + mRequestCode);
+        ReflectUtils.executeMethod(object, GRANTED_MAP.get(mRequestCode), null);
+        GRANTED_MAP.remove(mRequestCode);
     }
 
     void recycle(int requestCode) {
         DENIED_MAP.remove(requestCode);
         GRANTED_MAP.remove(requestCode);
         mRequestCode = -1;
+        object = null;
     }
 
     @FunctionalInterface

@@ -6,9 +6,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.SparseArray;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 作者：wangqing
@@ -65,38 +67,26 @@ public class PermissionsFragment extends Fragment {
     void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults, boolean[] shouldShowRequestPermissionRationale) {
         QPermissionHelper qPermissionHelper = getQPermission(requestCode);
         if (qPermissionHelper == null) {
-            Log.e(QPermission.TAG, "QPermissionHelper.onRequestPermissionsResult invoked but didn't find the corresponding permission request.");
+            Log.e(QPermission.TAG, "QPermissionHelper is null.invoked but didn't find the corresponding permission request.");
             return;
         }
+        List<String> onDeniedList = null;
         for (int i = 0, size = permissions.length; i < size; i++) {
             log("onRequestPermissionsResult  " + permissions[i]);
             boolean denied = grantResults[i] == PackageManager.PERMISSION_DENIED;
             if (denied) {
-                //
-                qPermissionHelper.onDenied();
-                return;
+                if (onDeniedList == null){
+                    onDeniedList = new ArrayList<>();
+                }
+                onDeniedList.add(permissions[i]);
             }
         }
-        // 权限获得授权
+        if (onDeniedList != null) {
+            qPermissionHelper.onDenied(onDeniedList);
+            return;
+        }
+        // 所有权限获得授权
         qPermissionHelper.onGranted();
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    boolean isGranted(String permission) {
-        final FragmentActivity fragmentActivity = getActivity();
-        if (fragmentActivity == null) {
-            throw new IllegalStateException("This fragment must be attached to an activity.");
-        }
-        return fragmentActivity.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
-    }
-
-    @TargetApi(Build.VERSION_CODES.M)
-    boolean isRevoked(String permission) {
-        final FragmentActivity fragmentActivity = getActivity();
-        if (fragmentActivity == null) {
-            throw new IllegalStateException("This fragment must be attached to an activity.");
-        }
-        return fragmentActivity.getPackageManager().isPermissionRevokedByPolicy(permission, getActivity().getPackageName());
     }
 
     public QPermissionHelper getQPermission(int key) {
