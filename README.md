@@ -20,7 +20,7 @@ QPermission.getInstance()
     .openLog()
     .request(Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO);
 ```
-2.定义带自定义注解的方法
+2.定义带自定义注解的方法  
 PermissionGranted：表示权限请求成功后执行的方法  
 PermissionDenied：表示权限被拒绝后执行的方法 
  
