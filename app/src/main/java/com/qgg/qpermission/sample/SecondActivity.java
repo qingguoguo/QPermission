@@ -3,6 +3,7 @@ package com.qgg.qpermission.sample;
 import android.Manifest;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -42,7 +43,8 @@ public class SecondActivity extends AppCompatActivity {
 
     @PermissionDenied(requestCode = 300)
     public void closeCamera(List<String> permissions) {
-        Toast.makeText(SecondActivity.this, "用户拒绝了 " + permissions.size() + " 请求", Toast.LENGTH_SHORT).show();
+        String text = TextUtils.join("，", permissions);
+        Toast.makeText(SecondActivity.this, "用户拒绝了 " + text + " 请求", Toast.LENGTH_SHORT).show();
     }
 
     @PermissionGranted(requestCode = 500)
@@ -52,6 +54,7 @@ public class SecondActivity extends AppCompatActivity {
 
     @PermissionDenied(requestCode = 500)
     public void closeContacts(List<String> permissions) {
-        Toast.makeText(SecondActivity.this, "用户拒绝了联系人权限请求", Toast.LENGTH_SHORT).show();
+        String text = TextUtils.join("，", permissions);
+        Toast.makeText(SecondActivity.this, "用户拒绝了 " + text + " 请求", Toast.LENGTH_SHORT).show();
     }
 }
