@@ -1,5 +1,7 @@
 # QPermission
-QPermission是基于注解解耦的Android权限请求框架
+QPermission是基于注解解耦的Android权限请求框架  
+不需要重写onRequestPermissionsResult()方法  
+开发者可使用更少的代码来实现权限请求
 
 # 使用场景
 支持在  
